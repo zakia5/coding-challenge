@@ -41,7 +41,7 @@ def Hashtags_time(inputText):
 	Hashtags = list()
 	timest = ""
 	jsonData = json.loads(inputText)
-	#take all hashtags, make them lower case and remove duplicates
+	#take all hashtags, make them lower case and remove repeated hashtags
 	if "entities" in jsonData:
 		Entities = jsonData["entities"]
 		if "hashtags" in Entities:
@@ -49,20 +49,20 @@ def Hashtags_time(inputText):
 			if hashtagList:		
 				Hashtags = [item['text'] for item in hashtagList]
 				Hashtags = [tag.lower() for tag in Hashtags]
-				Hashtags = list(set(Hashtags))
+				Hashtags = list(set(Hashtags)) # Remove repeated hashtags
 	#take created_at timestamp and convert into datetime format
 	if "created_at" in jsonData:
 		timest = jsonData["created_at"]
 		timest = convert_time(timest)
 	return Hashtags, timest
 
-# Creating all the combinations of hash tags and sorted so as to avoid duplicated edge list
+#This function gets a list of hashtags (strings) and compute all possible combinations.
+# each hashtag as a vertex in a graph, we can compute all the connections among them.
 def Edge_list(Hashtags):
 	Hashtags = sorted(set(Hashtags))
 	return list(itertools.combinations(Hashtags, 2))
 
-#function to remove invalid edges from graph
-#return: updated graph
+# Because the same edges can appear in different tweets, we need to remove repeated edges
 def evictInvalidEdges():
 	global graphEdgesList
 	global timeHashtagDict
@@ -103,7 +103,7 @@ def AvgNode():
 
 #reads the input tweet file  and compute edges, graph and average degree of graph
 #return: output file in specified format
-def Caldegree_Graph(inputFile,outputFile):
+def GenerateGraph(inputFile,outputFile):
         global timeHashtagDict	
         global graphEdgesList 	
         with open(inputFile, "r") as inFile, open(outputFile, "w") as outFile:
@@ -124,5 +124,5 @@ if __name__ == '__main__':
     if len(argv) == 3:   
         inputFile = argv[1]
         outputFile = argv[2]
-        Caldegree_Graph(inputFile,outputFile)
+        GenerateGraph(inputFile,outputFile)
   
