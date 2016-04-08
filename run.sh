@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
-# example of the run script for running the average_degree calculation
-
-# I'll execute my programs, with the input directory tweet_input and output the files in the directory tweet_output
-python ./src/average_degree.py ./tweet_input/tweets.txt ./tweet_output/output.txt
+# Shell script to execute programs, with the input directory tweet_input and output the files in the directory tweet_output
+python3 ./src/tweets_cleaned.py ./tweet_input/tweets.txt ./tweet_output/ft1.txt
+python3 ./src/average_degree.py ./tweet_input/tweets.txt ./tweet_output/ft2.txt
 
 
 
